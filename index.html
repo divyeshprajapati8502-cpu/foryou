@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A Little Sorry Box</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Hind+Vadodara:wght@400;500;600&display=swap">
+<style>
+/* Layout: one centred gift box on blush paper scattered with tiny hearts; the box opens into a handmade-style card (stitched border, little red hearts) like the cards she made. Deliberately one light look. */
+:root{
+  --blush:#f6dfe3;
+  --blush-deep:#efc9d0;
+  --card:#fffdfb;
+  --ink:#3a2a2c;
+  --ink-soft:#7a5a60;
+  --heart:#d6334b;
+  --choco:#5b3424;
+  --choco-dark:#45261a;
+  --ribbon:#e88aa0;
+  --font-hand:"Caveat", "Segoe Print", "Bradley Hand", cursive;
+  --font-body:"Hind Vadodara", "Noto Sans Gujarati", system-ui, sans-serif;
+  color-scheme:light;
+}
+html,body{min-height:100%}
+body{
+  margin:0;
+  background:radial-gradient(ellipse at 50% 20%,var(--blush) 0%,var(--blush-deep) 100%);
+  background-color:var(--blush);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:17px;line-height:1.7;
+  overflow-x:hidden;
+}
+.hearts{position:fixed;inset:0;pointer-events:none;z-index:0}
+.hearts span{position:absolute;color:var(--heart);opacity:.22;font-size:12px;animation:drift 9s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+.scene{
+  position:relative;z-index:1;
+  min-height:100dvh;box-sizing:border-box;
+  display:flex;flex-direction:column;align-items:center;
+  padding-block:48px 64px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+}
+.eyebrow{font-family:var(--font-hand);font-size:30px;color:var(--ink);margin:0 0 40px;text-align:center;text-wrap:balance}
+.lang{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;background:rgba(255,255,255,.55);border-radius:999px;padding:4px;margin-bottom:40px}
+.lang button{font:500 14px var(--font-body);color:var(--ink);background:transparent;border:0;border-radius:999px;padding:6px 14px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--choco);color:var(--card)}
+button:focus-visible{outline:2px solid var(--heart);outline-offset:3px}
+
+/* Gift box */
+.gift{position:relative;width:220px;max-width:100%;height:230px;background:none;border:0;padding:0;cursor:pointer;animation:wiggle 3.2s ease-in-out infinite}
+@keyframes wiggle{0%,82%,100%{transform:rotate(0)}86%{transform:rotate(-3deg)}90%{transform:rotate(3deg)}94%{transform:rotate(-2deg)}}
+.box{position:absolute;left:14px;right:14px;bottom:0;height:150px;background:var(--choco);border-radius:6px;box-shadow:0 18px 30px rgba(69,38,26,.3)}
+.box::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:28px;transform:translateX(-50%);background:var(--ribbon)}
+.lid{position:absolute;left:0;right:0;top:44px;height:44px;background:var(--choco-dark);border-radius:6px;transition:transform .7s ease,opacity .7s ease;z-index:2}
+.lid::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:28px;transform:translateX(-50%);background:var(--ribbon)}
+.bow{position:absolute;left:50%;top:-30px;width:0;height:0}
+.bow i{position:absolute;width:44px;height:30px;border:7px solid var(--ribbon);border-radius:50%;top:0}
+.bow i:first-child{right:2px;transform:rotate(-20deg)}
+.bow i:last-child{left:2px;transform:rotate(20deg)}
+.tag{
+  position:absolute;right:-6px;bottom:22px;z-index:3;
+  background:var(--card);color:var(--ink);font-family:var(--font-hand);font-size:22px;
+  padding:2px 12px;border-radius:4px;transform:rotate(8deg);box-shadow:0 4px 10px rgba(0,0,0,.12);
+}
+.gift.open{animation:none}
+.gift.open .lid{transform:translateY(-90px) rotate(-14deg);opacity:0}
+.hint{margin-top:20px;font-size:15px;color:var(--ink-soft);text-align:center}
+
+/* Card, styled like her handmade cards */
+.card{
+  position:relative;width:min(540px,100%);box-sizing:border-box;
+  background:var(--card);border-radius:6px;
+  padding:40px clamp(22px,6vw,46px);
+  box-shadow:0 22px 50px rgba(91,52,36,.22);
+  animation:rise .8s ease both;
+}
+.card::before{content:"";position:absolute;inset:10px;border:2px dashed #cfb9bc;border-radius:4px;pointer-events:none}
+@keyframes rise{from{opacity:0;transform:translateY(22px) scale(.97)}to{opacity:1;transform:none}}
+.dots{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:6px}
+.dots span{position:absolute;color:var(--heart);font-size:10px;opacity:.75}
+.card > *:not(.dots){position:relative}
+.card h1{font-family:var(--font-hand);font-weight:700;font-size:42px;line-height:1.1;margin:0 0 16px;color:var(--ink)}
+.card p{margin:0 0 14px;max-width:62ch}
+.card .soft{font-family:var(--font-hand);font-size:26px;line-height:1.3;color:var(--choco)}
+.sign{font-family:var(--font-hand);font-size:30px;text-align:right;margin-top:18px}
+.ask{font-family:var(--font-hand);font-size:34px;text-align:center;margin:26px 0 14px;padding-top:20px;border-top:2px dashed #e6d4d6}
+.answers{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.answers button{font:600 16px var(--font-body);border-radius:999px;padding:10px 20px;cursor:pointer;border:2px solid var(--choco)}
+.answers .yes{background:var(--choco);color:var(--card)}
+.answers .wait{background:transparent;color:var(--choco)}
+.reply{margin-top:18px;text-align:center;font-size:18px;background:var(--blush);border-radius:10px;padding:14px 16px}
+
+@media (prefers-reduced-motion: reduce){
+  .hearts span,.gift,.card{animation:none}
+  .lid{transition:none}
+}
+</style>
+
+<div class="hearts" id="hearts" aria-hidden="true"></div>
+
+<main class="scene">
+  <p class="eyebrow" data-t="eyebrow">A little box, just for you</p>
+
+  <button type="button" class="gift" id="gift" aria-label="Open the gift box">
+    <span class="lid"><span class="bow"><i></i><i></i></span></span>
+    <span class="box"></span>
+    <span class="tag" data-t="tag">For you</span>
+  </button>
+  <p class="hint" id="hint" data-t="hint">Tap to open 🎁</p>
+
+  <article class="card" id="card" hidden>
+    <div class="dots" id="dots" aria-hidden="true"></div>
+    <h1 data-t="greet">Baby,</h1>
+    <p data-t="l1"></p>
+    <p data-t="l2"></p>
+    <p data-t="l3"></p>
+    <p data-t="l4"></p>
+    <p class="soft" data-t="l5"></p>
+    <p class="sign" data-t="sign"></p>
+
+    <p class="ask" data-t="ask"></p>
+    <div class="answers">
+      <button type="button" class="yes" id="yes" data-t="yes"></button>
+      <button type="button" class="wait" id="wait" data-t="wait"></button>
+    </div>
+    <p class="reply" id="reply" hidden></p>
+  </article>
+</main>
+
+<script>
+const T = {
+  en: {
+    eyebrow:"A little box, just for you",
+    tag:"For you",
+    hint:"Tap to open 🎁",
+    greet:"Baby,",
+    l1:"You sent me a gift with so much love, and I sent it back without even knowing what it was 🥺",
+    l2:"You're right. I should have stopped it, I should have done whatever it took to keep it.",
+    l3:"That box didn't just hold a gift. It held your feelings. I'm truly sorry, from my heart 🙏",
+    l4:"From now on, whatever comes from you, I'll keep it safe, and I'll keep you safe too 🤍",
+    l5:"This time I'm the one sending a box, and it's full of my sorry 🎁",
+    sign:"Always yours 🤍",
+    ask:"Will you forgive me? 🥺",
+    yes:"Yes, I forgive you 🫶",
+    wait:"I need a little time 🤍",
+    yesReply:"Thank you baby 🥹❤️ I'll never let this smile go away. Send me a screenshot of this page 😌",
+    waitReply:"Of course, take the time you need 🤍 But after so long, I had finally found my happiness... so please forgive me na? Sorry 🥺"
+  },
+  roman: {
+    eyebrow:"Ek naano box, fakt tara maate",
+    tag:"Tara maate",
+    hint:"Kholva maate tap kar 🎁",
+    greet:"Baby,",
+    l1:"Te aatla pyaar thi mara maate gift moklyu, ane me jaanya vagar j e paachhu moklavi didhu 🥺",
+    l2:"Tu saachi che. Mare rokavu joitu hatu, kai pan karine e lai levu joitu hatu.",
+    l3:"E box ma faqt gift nahotu, emaa tari feelings hati. Ena maate dil thi sorry 🙏",
+    l4:"Have pachhi tari taraf thi je kai aavse, ene hu sambhaali ne raakhis, ane tane pan 🤍",
+    l5:"Aa vakhte box hu moklu chu, ane aama fakt maru sorry che 🎁",
+    sign:"Hamesha taro 🤍",
+    ask:"Maaf kari daish? 🥺",
+    yes:"Haa, kari didhu 🫶",
+    wait:"Thodo time joie 🤍",
+    yesReply:"Thank you baby 🥹❤️ Have aa smile ne kyarey jaava nahi dau. Aa page no screenshot mane moklje 😌",
+    waitReply:"Bilkul, jetlo time joie etlo le 🤍 Pan atla time pachhi to hu khush thayo hato... please maani ja ne, sorry 🥺"
+  },
+  guj: {
+    eyebrow:"એક નાનો બૉક્સ, ફક્ત તારા માટે",
+    tag:"તારા માટે",
+    hint:"ખોલવા માટે ટૅપ કર 🎁",
+    greet:"બેબી,",
+    l1:"તેં આટલા પ્રેમથી મારા માટે ગિફ્ટ મોકલ્યું, અને મેં જાણ્યા વગર જ એ પાછું મોકલાવી દીધું 🥺",
+    l2:"તું સાચી છે. મારે રોકાવું જોઈતું હતું, કંઈ પણ કરીને એ લઈ લેવું જોઈતું હતું.",
+    l3:"એ બૉક્સમાં ફક્ત ગિફ્ટ નહોતું, એમાં તારી ફીલિંગ્સ હતી. એના માટે દિલથી સૉરી 🙏",
+    l4:"હવે પછી તારી તરફથી જે કંઈ આવશે, એને હું સંભાળીને રાખીશ, અને તને પણ 🤍",
+    l5:"આ વખતે બૉક્સ હું મોકલું છું, અને આમાં ફક્ત મારું સૉરી છે 🎁",
+    sign:"હંમેશા તારો 🤍",
+    ask:"માફ કરી દઈશ? 🥺",
+    yes:"હા, કરી દીધું 🫶",
+    wait:"થોડો ટાઈમ જોઈએ 🤍",
+    yesReply:"થેંક યુ બેબી 🥹❤️ હવે આ સ્માઈલ ક્યારેય જવા નહીં દઉં. આ પેજનો સ્ક્રીનશૉટ મને મોકલજે 😌",
+    waitReply:"બિલકુલ, જેટલો ટાઈમ જોઈએ એટલો લે 🤍 પણ આટલા ટાઈમ પછી તો હું ખુશ થયો હતો... પ્લીઝ માની જા ને, સૉરી 🥺"
+  }
+};
+let lang = "en";
+let answered = null;
+
+
+function render(){
+  document.querySelectorAll("[data-t]").forEach(el => { el.textContent = T[lang][el.dataset.t]; });
+  document.documentElement.lang = "en";
+  if (answered) showReply(answered);
+}
+
+
+const gift = document.getElementById("gift");
+gift.addEventListener("click", () => {
+  gift.classList.add("open");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  setTimeout(() => {
+    gift.hidden = true;
+    document.getElementById("hint").hidden = true;
+    const card = document.getElementById("card");
+    card.hidden = false;
+    card.scrollIntoView({behavior: reduce ? "auto" : "smooth", block:"start"});
+  }, reduce ? 0 : 750);
+});
+
+function showReply(kind){
+  const r = document.getElementById("reply");
+  r.textContent = T[lang][kind === "yes" ? "yesReply" : "waitReply"];
+  r.hidden = false;
+}
+document.getElementById("yes").addEventListener("click", () => { answered = "yes"; showReply("yes"); });
+document.getElementById("wait").addEventListener("click", () => { answered = "wait"; showReply("wait"); });
+
+// background hearts
+const bg = document.getElementById("hearts");
+for (let i = 0; i < 40; i++){
+  const h = document.createElement("span");
+  h.textContent = "♥";
+  h.style.left = Math.random()*100 + "%";
+  h.style.top = Math.random()*100 + "%";
+  h.style.fontSize = (8 + Math.random()*10).toFixed(0) + "px";
+  h.style.animationDelay = (Math.random()*9).toFixed(2) + "s";
+  bg.appendChild(h);
+}
+// little red hearts around the card edge, like her cards
+const dots = document.getElementById("dots");
+const spots = [[4,6],[12,3],[30,4],[55,3],[78,4],[94,7],[96,25],[95,48],[96,72],[94,93],[75,96],[50,97],[25,96],[5,94],[3,70],[4,45],[3,22]];
+spots.forEach(([x,y]) => {
+  const d = document.createElement("span");
+  d.textContent = "♥";
+  d.style.left = x + "%"; d.style.top = y + "%";
+  dots.appendChild(d);
+});
+render();
+</script>
+
+</html>
